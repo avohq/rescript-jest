@@ -135,19 +135,18 @@ module LLExpect: {
 
 module Runner = (A: Asserter) => {
   let affirm = A.affirm
-  @val external _test: (string, @uncurry (unit => Js.undefined<unit>)) => unit = "test"
+  @val external _test: (string, (. unit) => Js.undefined<unit>) => unit = "test"
   @val
   external _testAsync: (
     string,
-    ((. unit) => unit) => Js.undefined<unit>,
+    (. (. unit) => unit) => Js.undefined<unit>,
     Js.Undefined.t<int>,
   ) => unit = "test"
   @val
-  external _testPromise: (string, @uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
-    "test"
+  external _testPromise: (string, (. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "test"
 
   let test = (name, callback) =>
-    _test(name, () => {
+    _test(name, (. ()) => {
       affirm(callback())
       Js.undefined
     })
@@ -155,7 +154,7 @@ module Runner = (A: Asserter) => {
   let testAsync = (name, ~timeout=?, callback) =>
     _testAsync(
       name,
-      finish => {
+      (. finish) => {
         callback(case => {
           affirm(case)
           finish(.)
@@ -168,13 +167,13 @@ module Runner = (A: Asserter) => {
   let testPromise = (name, ~timeout=?, callback) =>
     _testPromise(
       name,
-      () => Promise.then(callback(), a => a->A.affirm->Promise.resolve),
+      (. ()) => Promise.then(callback(), a => a->A.affirm->Promise.resolve),
       Js.Undefined.fromOption(timeout),
     )
 
   let testAll = (name, inputs, callback) => List.iter(input => {
       let name = `${name} - ${input->Js.String.make}`
-      _test(name, () => {
+      _test(name, (. ()) => {
         affirm(callback(input))
         Js.undefined
       })
@@ -184,19 +183,19 @@ module Runner = (A: Asserter) => {
       let name = `${name} - ${input->Js.String.make}`
       _testPromise(
         name,
-        () => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
+        (. ()) => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
         Js.Undefined.fromOption(timeout),
       )
     }, inputs)
 
-  @val external describe: (string, @uncurry (unit => Js.undefined<unit>)) => unit = "describe"
+  @val external describe: (string, (. unit) => Js.undefined<unit>) => unit = "describe"
   let describe = (label, f) =>
-    describe(label, () => {
+    describe(label, (. ()) => {
       f()
       Js.undefined
     })
 
-  @val external beforeAll: (@uncurry (unit => unit)) => unit = "beforeAll"
+  @val external beforeAll: ((. unit) => unit) => unit = "beforeAll"
   @val
   external beforeAllAsync: (((. unit) => unit) => Js.undefined<unit>, Js.Undefined.t<int>) => unit =
     "beforeAll"
@@ -205,12 +204,11 @@ module Runner = (A: Asserter) => {
       Js.undefined
     }, Js.Undefined.fromOption(timeout))
   @val
-  external beforeAllPromise: (@uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
-    "beforeAll"
+  external beforeAllPromise: (. (. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "beforeAll"
   let beforeAllPromise = (~timeout=?, callback) =>
-    beforeAllPromise(() => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
+    beforeAllPromise((. ()) => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
 
-  @val external beforeEach: (@uncurry (unit => unit)) => unit = "beforeEach"
+  @val external beforeEach: ((. unit) => unit) => unit = "beforeEach"
   @val
   external beforeEachAsync: (
     ((. unit) => unit) => Js.undefined<unit>,
@@ -221,12 +219,11 @@ module Runner = (A: Asserter) => {
       Js.undefined
     }, Js.Undefined.fromOption(timeout))
   @val
-  external beforeEachPromise: (@uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
-    "beforeEach"
+  external beforeEachPromise: ((. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "beforeEach"
   let beforeEachPromise = (~timeout=?, callback) =>
-    beforeEachPromise(() => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
+    beforeEachPromise((. ()) => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
 
-  @val external afterAll: (@uncurry (unit => unit)) => unit = "afterAll"
+  @val external afterAll: ((. unit) => unit) => unit = "afterAll"
   @val
   external afterAllAsync: (((. unit) => unit) => Js.undefined<unit>, Js.Undefined.t<int>) => unit =
     "afterAll"
@@ -235,12 +232,11 @@ module Runner = (A: Asserter) => {
       Js.undefined
     }, Js.Undefined.fromOption(timeout))
   @val
-  external afterAllPromise: (@uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
-    "afterAll"
+  external afterAllPromise: ((. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "afterAll"
   let afterAllPromise = (~timeout=?, callback) =>
-    afterAllPromise(() => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
+    afterAllPromise((. ()) => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
 
-  @val external afterEach: (@uncurry (unit => unit)) => unit = "afterEach"
+  @val external afterEach: ((. unit) => unit) => unit = "afterEach"
   @val
   external afterEachAsync: (((. unit) => unit) => Js.undefined<unit>, Js.Undefined.t<int>) => unit =
     "afterEach"
@@ -249,13 +245,12 @@ module Runner = (A: Asserter) => {
       Js.undefined
     }, Js.Undefined.fromOption(timeout))
   @val
-  external afterEachPromise: (@uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
-    "afterEach"
+  external afterEachPromise: ((. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "afterEach"
   let afterEachPromise = (~timeout=?, callback) =>
-    afterEachPromise(() => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
+    afterEachPromise((. ()) => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
 
   module Only = {
-    @val external _test: (string, @uncurry (unit => Js.undefined<unit>)) => unit = "it.only"
+    @val external _test: (string, (. unit) => Js.undefined<unit>) => unit = "it.only"
     @val
     external _testAsync: (
       string,
@@ -263,11 +258,11 @@ module Runner = (A: Asserter) => {
       Js.Undefined.t<int>,
     ) => unit = "it.only"
     @val
-    external _testPromise: (string, @uncurry (unit => promise<'a>), Js.Undefined.t<int>) => unit =
+    external _testPromise: (string, (. unit) => promise<'a>, Js.Undefined.t<int>) => unit =
       "it.only"
 
     let test = (name, callback) =>
-      _test(name, () => {
+      _test(name, (. ()) => {
         affirm(callback())
         Js.undefined
       })
@@ -288,13 +283,13 @@ module Runner = (A: Asserter) => {
     let testPromise = (name, ~timeout=?, callback) =>
       _testPromise(
         name,
-        () => Promise.then(callback(), a => a->affirm->Promise.resolve),
+        (. ()) => Promise.then(callback(), a => a->affirm->Promise.resolve),
         Js.Undefined.fromOption(timeout),
       )
 
     let testAll = (name, inputs, callback) => List.iter(input => {
         let name = `${name} - ${input->Js.String.make}`
-        _test(name, () => {
+        _test(name, (. ()) => {
           affirm(callback(input))
           Js.undefined
         })
@@ -304,26 +299,26 @@ module Runner = (A: Asserter) => {
         let name = `${name} - ${input->Js.String.make}`
         _testPromise(
           name,
-          () => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
+          (. ()) => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
           Js.Undefined.fromOption(timeout),
         )
       }, inputs)
 
     @val
-    external describe: (string, @uncurry (unit => Js.undefined<unit>)) => unit = "describe.only"
+    external describe: (string, (. unit) => Js.undefined<unit>) => unit = "describe.only"
     let describe = (label, f) =>
-      describe(label, () => {
+      describe(label, (. ()) => {
         f()
         Js.undefined
       })
   }
 
   module Skip = {
-    @val external test: (string, @uncurry (unit => A.t<'a>)) => unit = "it.skip"
+    @val external test: (string, unit => A.t<'a>) => unit = "it.skip"
     @val external testAsync: (string, (A.t<'a> => unit) => unit) => unit = "it.skip"
     let testAsync = (name, ~timeout as _=?, callback) => testAsync(name, callback)
     @val
-    external testPromise: (string, @uncurry (unit => promise<A.t<'a>>)) => unit = "it.skip"
+    external testPromise: (string, unit => promise<A.t<'a>>) => unit = "it.skip"
     let testPromise = (name, ~timeout as _=?, callback) => testPromise(name, callback)
     let testAll = (name, inputs, callback) => List.iter(input => {
         let name = `${name} - ${input->Js.String.make}`
@@ -334,9 +329,9 @@ module Runner = (A: Asserter) => {
         testPromise(name, () => callback(input))
       }, inputs)
     @val
-    external describe: (string, @uncurry (unit => Js.undefined<unit>)) => unit = "describe.skip"
+    external describe: (string, (. unit) => Js.undefined<unit>) => unit = "describe.skip"
     let describe = (label, f) =>
-      describe(label, () => {
+      describe(label, (. ()) => {
         f()
         Js.undefined
       })
