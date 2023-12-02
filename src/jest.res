@@ -204,7 +204,7 @@ module Runner = (A: Asserter) => {
       Js.undefined
     }, Js.Undefined.fromOption(timeout))
   @val
-  external beforeAllPromise: (. (. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "beforeAll"
+  external beforeAllPromise: ((. unit) => promise<'a>, Js.Undefined.t<int>) => unit = "beforeAll"
   let beforeAllPromise = (~timeout=?, callback) =>
     beforeAllPromise((. ()) => Promise.resolve(callback()), Js.Undefined.fromOption(timeout))
 
