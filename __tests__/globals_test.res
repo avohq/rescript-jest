@@ -75,7 +75,7 @@ let () = {
   describe("beforeAll", () => {
     let x = ref(0)
 
-    beforeAll(() => x := x.contents + 4)
+    beforeAll((. ()) => x := x.contents + 4)
 
     test("x is 4", () =>
       if x.contents === 4 {
@@ -232,7 +232,7 @@ let () = {
   describe("beforeEach", () => {
     let x = ref(0)
 
-    beforeEach(() => x := x.contents + 4)
+    beforeEach((. ()) => x := x.contents + 4)
 
     test("x is 4", () =>
       if x.contents === 4 {
@@ -390,7 +390,7 @@ let () = {
     let x = ref(0)
 
     describe("phase 1", () => {
-      afterAll(() => x := x.contents + 4)
+      afterAll((. ()) => x := x.contents + 4)
 
       test(
         "x is 0",
@@ -640,7 +640,7 @@ let () = {
   describe("afterEach", () => {
     let x = ref(0)
 
-    afterEach(() => x := x.contents + 4)
+    afterEach((. ()) => x := x.contents + 4)
 
     test("x is 0", () =>
       if x.contents === 0 {
