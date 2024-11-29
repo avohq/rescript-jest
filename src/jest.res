@@ -169,7 +169,7 @@ module Runner = (A: Asserter) => {
     )
 
   let testAll = (name, inputs, callback) =>
-    RescriptCore.List.forEach(inputs, input => {
+    List.forEach(inputs, input => {
       let name = `${name} - ${input->Js.String.make}`
       _test(name, () => {
         affirm(callback(input))
@@ -177,14 +177,15 @@ module Runner = (A: Asserter) => {
       })
     })
 
-  let testAllPromise = (name: string, inputs, ~timeout=?, callback) => List.iter(input => {
+  let testAllPromise = (name: string, inputs, ~timeout=?, callback) =>
+    List.forEach(inputs, input => {
       let name = `${name} - ${input->Js.String.make}`
       _testPromise(
         name,
         () => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
         Js.Undefined.fromOption(timeout),
       )
-    }, inputs)
+    })
 
   @val external describe: (string, unit => Js.undefined<unit>) => unit = "describe"
   let describe = (label, f) =>
@@ -282,22 +283,24 @@ module Runner = (A: Asserter) => {
         Js.Undefined.fromOption(timeout),
       )
 
-    let testAll = (name, inputs, callback) => List.iter(input => {
+    let testAll = (name, inputs, callback) =>
+      List.forEach(inputs, input => {
         let name = `${name} - ${input->Js.String.make}`
         _test(name, () => {
           affirm(callback(input))
           Js.undefined
         })
-      }, inputs)
+      })
 
-    let testAllPromise = (name, inputs, ~timeout=?, callback) => List.iter(input => {
+    let testAllPromise = (name, inputs, ~timeout=?, callback) =>
+      List.forEach(inputs, input => {
         let name = `${name} - ${input->Js.String.make}`
         _testPromise(
           name,
           () => Promise.then(callback(input), a => a->A.affirm->Promise.resolve),
           Js.Undefined.fromOption(timeout),
         )
-      }, inputs)
+      })
 
     @val
     external describe: (string, unit => Js.undefined<unit>) => unit = "describe.only"
@@ -315,14 +318,16 @@ module Runner = (A: Asserter) => {
     @val
     external testPromise: (string, unit => promise<A.t<'a>>) => unit = "it.skip"
     let testPromise = (name, ~timeout as _=?, callback) => testPromise(name, callback)
-    let testAll = (name, inputs, callback) => List.iter(input => {
+    let testAll = (name, inputs, callback) =>
+      List.forEach(inputs, input => {
         let name = `${name} - ${input->Js.String.make}`
         test(name, () => callback(input))
-      }, inputs)
-    let testAllPromise = (name, inputs, ~timeout as _=?, callback) => List.iter(input => {
+      })
+    let testAllPromise = (name, inputs, ~timeout as _=?, callback) =>
+      List.forEach(inputs, input => {
         let name = `${name} - ${input->Js.String.make}`
         testPromise(name, () => callback(input))
-      }, inputs)
+      })
     @val
     external describe: (string, unit => Js.undefined<unit>) => unit = "describe.skip"
     let describe = (label, f) =>
