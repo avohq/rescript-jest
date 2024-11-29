@@ -1,7 +1,7 @@
 {
   "name": "@glennsl/rescript-jest",
   "namespace": false,
-  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
+  "bsc-flags": ["-bs-no-version-header"],
   "suffix": ".bs.js",
   "package-specs": {
     "module": "commonjs",
@@ -16,8 +16,10 @@
       "type": "dev"
     }
   ],
+  "bs-dependencies": [
+    "@rescript/core"
+  ],
   "warnings": {
     "number": "-44"
   },
-  "uncurried": true
 }
