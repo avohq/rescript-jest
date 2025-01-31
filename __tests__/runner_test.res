@@ -2,7 +2,7 @@ module Promise = Js.Promise2
 
 include Jest.Runner({
   type t<_> = bool
-  let affirm = ok => assert ok
+  let affirm = ok => assert(ok)
 })
 
 let () = {
@@ -50,7 +50,7 @@ let () = {
   describe("beforeAll", () => {
     let x = ref(0)
 
-    beforeAll(() => x := x.contents + 4)
+    beforeAll((. ()) => x := x.contents + 4)
 
     test("x is 4", () => x.contents === 4)
     test("x is still 4", () => x.contents === 4)
@@ -133,7 +133,7 @@ let () = {
   describe("beforeEach", () => {
     let x = ref(0)
 
-    beforeEach(() => x := x.contents + 4)
+    beforeEach((. ()) => x := x.contents + 4)
 
     test("x is 4", () => x.contents === 4)
     test("x is suddenly 8", () => x.contents === 8)
@@ -217,7 +217,7 @@ let () = {
     let x = ref(0)
 
     describe("phase 1", () => {
-      afterAll(() => x := x.contents + 4)
+      afterAll((. ()) => x := x.contents + 4)
 
       test("x is 0", () => x.contents === 0)
       test("x is still 0", () => x.contents === 0)
@@ -329,7 +329,7 @@ let () = {
   describe("afterEach", () => {
     let x = ref(0)
 
-    afterEach(() => x := x.contents + 4)
+    afterEach((. ()) => x := x.contents + 4)
 
     test("x is 0", () => x.contents === 0)
     test("x is suddenly 4", () => x.contents === 4)
