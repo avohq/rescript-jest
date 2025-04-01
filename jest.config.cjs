@@ -38,18 +38,18 @@ module.exports = {
     "json",
     "html",
     "text",
-  //   "lcov",
-  //   "clover"
+    //   "lcov",
+    //   "clover"
   ],
 
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
-    "global": {
-      "branches": 85,
-      "functions": 85,
-      "lines": 85,
-      "statements": 85
-    }
+    global: {
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
   },
 
   // A path to a custom dependency extractor
@@ -83,11 +83,11 @@ module.exports = {
   moduleFileExtensions: [
     "js",
     "mjs",
-  //  "jsx",
-  //  "ts",
-  //  "tsx",
-  //  "json",
-  //  "node"
+    //  "jsx",
+    //  "ts",
+    //  "tsx",
+    //  "json",
+    //  "node"
   ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
@@ -168,9 +168,7 @@ module.exports = {
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: ["/node_modules/"],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -189,16 +187,27 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\.m?js$": "babel-jest"
-  // "^.+\.js$": "babel-jest"
+    "^.+.m?js$": [
+      "babel-jest",
+      {
+        plugins: [
+          [
+            "@babel/plugin-syntax-import-attributes", // Needed for json imports with assertions
+            { deprecatedAssertSyntax: true }, // Needed for json imports with assertions with deprecated 'assert' syntax, even though 'with' isn't supported yet 🤔
+          ],
+        ],
+        presets: [["@babel/preset-env", { targets: { node: "current" } }]], // Transform for Jest, baby
+      },
+    ],
+    // "^.+\.js$": "babel-jest"
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    "node_modules/(?!(rescript)/)"
-  //   "/node_modules/",
-  //   "\\.pnp\\.[^\\/]+$",
-  //   "/src/"
+    "node_modules/(?!(rescript|@rescript/core)/)",
+    //   "/node_modules/",
+    //   "\\.pnp\\.[^\\/]+$",
+    //   "/src/"
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
