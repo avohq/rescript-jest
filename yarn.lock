@@ -1150,10 +1150,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@rescript/core@1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@rescript/core/-/core-1.5.2.tgz#7c15659c2e1655ca5430dd665ca5a95ae5b64673"
-  integrity sha512-VWRFHrQu8hWnd9Y9LYZ8kig2urybhZlDVGy5u50bqf2WCRAeysBIfxK8eN4VlpQT38igMo0/uLX1KSpwCVMYGw==
+"@rescript/core@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@rescript/core/-/core-0.7.0.tgz#b4be2d2162ece3ce9930d11d4310299b3f445d0b"
+  integrity sha512-5arTnw1EVPvssqq4v+XHkigROoWXYm/3pD+ZyOSeJgnbzMccRibGWb4L6Ss3QBoEkpuCodX06RnLx8Vqa3kECQ==
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
