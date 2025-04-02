@@ -1,10 +1,14 @@
 {
   "name": "@glennsl/rescript-jest",
   "namespace": false,
-  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
-  "suffix": ".bs.js",
+  "bsc-flags": [
+    "-bs-no-version-header",
+    "-bs-super-errors",
+    "-open RescriptCore"
+  ],
+  "suffix": ".mjs",
   "package-specs": {
-    "module": "commonjs",
+    "module": "esmodule",
     "in-source": true
   },
   "sources": [
@@ -19,5 +23,5 @@
   "warnings": {
     "number": "-44"
   },
-  "uncurried": true
+  "bs-dependencies": ["@rescript/core"]
 }

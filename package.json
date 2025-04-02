@@ -4,6 +4,7 @@
   "description": "Rescript bindings to the Jest testing framework",
   "author": "glennsl",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "rescript build -with-deps",
     "clean": "rescript clean",
@@ -32,12 +33,12 @@
     "bsconfig.json"
   ],
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "babel-jest": "^27.3.1",
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-syntax-import-attributes": "^7.26.0",
+    "@babel/preset-env": "^7.26.9",
+    "@rescript/core": "^0.7.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^27.3.1",
     "rescript": "^11.1.0"
-  },
-  "dependencies": {
-    "jest": "^27.3.1"
   }
 }
